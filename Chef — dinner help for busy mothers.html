@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chef — dinner help for busy mothers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Nunito+Sans:wght@400;600;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F9F7; --surface:#FFFFFF; --ink:#16211E; --muted:#51615C; --line:#D9E4DF;
+  --brand:#14403A; --brand-ink:#FFFFFF; --wash:#E3F0EA; --accent:#F2A93B; --accent-ink:#2B1B00;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1715; --surface:#16231F; --ink:#EAF2EE; --muted:#9DB0A9; --line:#27393338;
+    --line:#2A3D37; --brand:#7FD1B0; --brand-ink:#08201A; --wash:#17302A; --accent:#F2A93B; --accent-ink:#2B1B00;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1715; --surface:#16231F; --ink:#EAF2EE; --muted:#9DB0A9; --line:#2A3D37;
+  --brand:#7FD1B0; --brand-ink:#08201A; --wash:#17302A; --accent:#F2A93B; --accent-ink:#2B1B00; color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.6}
+h1,h2,h3{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;line-height:1.1;margin:0;letter-spacing:-.02em}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:26px;text-decoration:none;color:var(--brand)}
+.logo i{width:34px;height:34px;border-radius:50% 50% 50% 8px;background:var(--brand);display:grid;place-items:center;color:var(--brand-ink);font-style:normal;font-size:18px}
+.links{display:flex;gap:28px;align-items:center;font-weight:600;font-size:15px}
+.links a{text-decoration:none;color:var(--muted)}
+.links a:hover{color:var(--ink)}
+.btn{display:inline-block;background:var(--brand);color:var(--brand-ink)!important;font-weight:700;padding:14px 26px;border-radius:999px;text-decoration:none;border:0;cursor:pointer;font:inherit;font-weight:700}
+.btn.alt{background:transparent;color:var(--ink)!important;border:2px solid var(--line)}
+.btn:hover{filter:brightness(1.08)}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding:72px 0 80px}
+.hero h1{font-size:clamp(40px,6vw,68px);font-weight:800}
+.hero p.lead{font-size:20px;color:var(--muted);max-width:30em;margin:22px 0 32px}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.plate{background:var(--wash);border-radius:28px;padding:28px;position:relative}
+.plate h3{font-size:20px;margin-bottom:4px}
+.plate small{color:var(--muted)}
+.tonight{background:var(--surface);border-radius:18px;padding:20px;margin-top:16px;border:1px solid var(--line)}
+.tonight b{font-family:"Bricolage Grotesque",sans-serif;font-size:22px;display:block;margin:2px 0 8px}
+.tag{display:inline-block;background:var(--wash);color:var(--brand);font-weight:700;font-size:13px;padding:4px 12px;border-radius:999px;margin:0 6px 6px 0}
+.tag.warm{background:var(--accent);color:var(--accent-ink)}
+section{padding:72px 0}
+section h2{font-size:clamp(30px,4vw,44px);font-weight:700;max-width:18em}
+.sub{color:var(--muted);max-width:36em;margin:14px 0 0}
+.finder{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:36px;margin-top:36px}
+.finder h3{font-size:18px;margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
+.chip{border:2px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-weight:600;padding:9px 18px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.results{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:8px}
+.rec{background:var(--bg);border-radius:18px;padding:22px;border:1px solid var(--line)}
+.rec h4{font-family:"Bricolage Grotesque",sans-serif;font-size:21px;margin:0 0 6px;letter-spacing:-.01em}
+.rec p{margin:8px 0 0;color:var(--muted);font-size:15px}
+.empty{color:var(--muted);padding:12px 0}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:36px 32px;margin-top:44px}
+.feat div{border-top:3px solid var(--brand);padding-top:18px}
+.feat h3{font-size:21px;margin-bottom:8px}
+.feat p{margin:0;color:var(--muted)}
+.band{background:var(--brand);color:var(--brand-ink)}
+.band .sub{color:inherit;opacity:.85}
+.week{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:40px}
+.day{background:var(--surface);color:var(--ink);border-radius:18px;padding:18px}
+.day span{font-weight:700;color:var(--muted);font-size:14px}
+.day b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:18px;line-height:1.2;margin:6px 0 10px}
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:40px}
+blockquote{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:28px}
+blockquote p{margin:0 0 16px;font-size:18px}
+blockquote cite{font-style:normal;font-weight:700;color:var(--muted);font-size:15px}
+.signup{background:var(--wash);border-radius:32px;padding:56px 40px;text-align:center}
+.signup h2{margin:0 auto}
+.signup form{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+.signup input{font:inherit;padding:14px 22px;border-radius:999px;border:2px solid var(--line);background:var(--surface);color:var(--ink);min-width:min(320px,100%)}
+.thanks{margin-top:18px;font-weight:700;color:var(--brand);min-height:1.6em}
+footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-size:15px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.lang{font:inherit;font-weight:700;font-size:15px;background:transparent;color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:7px 16px;cursor:pointer}
+.lang:hover{border-color:var(--brand)}
+html[dir=rtl] body{font-family:"Cairo","Segoe UI",Tahoma,sans-serif;line-height:1.85}
+html[dir=rtl] :is(h1,h2,h3,h4,.logo,.tonight b,.day b){font-family:"Cairo","Segoe UI",Tahoma,sans-serif;letter-spacing:0;line-height:1.35}
+html[dir=rtl] .logo i{border-radius:50% 50% 8px 50%}
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;padding:44px 0 56px}
+  .links a:not(.btn){display:none}
+  .week{grid-template-columns:1fr 1fr}
+  .finder{padding:24px}.signup{padding:40px 22px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .plate{animation:rise .7s ease-out both}
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="Chef home"><i aria-hidden="true">C</i>Chef</a>
+    <nav class="links" aria-label="Main">
+      <a href="#finder">Dinner finder</a>
+      <a href="#features">How it helps</a>
+      <a href="#plan">Weekly plan</a>
+      <button class="lang" id="lb" type="button" lang="ar">العربية</button>
+      <a class="btn" href="#join">Join free</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <h1>Dinner, decided before the kids ask.</h1>
+      <p class="lead">Chef helps mothers plan, shop and cook family meals in less time. Tell us what’s in your kitchen and get simple recipes that your children will actually eat.</p>
+      <div class="cta">
+        <a class="btn" href="#finder">Find tonight’s dinner</a>
+        <a class="btn alt" href="#plan">See a weekly plan</a>
+      </div>
+    </div>
+    <aside class="plate" aria-label="Example of tonight’s suggestion">
+      <h3>Tonight at your table</h3>
+      <small>Served 4 · Ready in 30 minutes</small>
+      <div class="tonight">
+        <b>One-pan chicken and rice</b>
+        <span class="tag warm">Kid-friendly</span><span class="tag">One pan</span><span class="tag">Uses what you have</span>
+        <p style="margin:10px 0 0;color:var(--muted);font-size:15px">Brown the chicken, add rice and tomatoes, cover and simmer. One pan to wash.</p>
+      </div>
+    </aside>
+  </div>
+
+  <section id="finder" style="padding-top:0">
+    <div class="wrap">
+      <h2>What’s in your kitchen right now?</h2>
+      <p class="sub">Choose the ingredients you have and how much time you can spare. Chef shows meals that fit.</p>
+      <div class="finder">
+        <h3 id="lbl-ing">Ingredients</h3>
+        <div class="chips" id="ings" role="group" aria-labelledby="lbl-ing"></div>
+        <h3 id="lbl-time">Time available</h3>
+        <div class="chips" id="times" role="group" aria-labelledby="lbl-time"></div>
+        <div class="results" id="out" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" style="padding-top:24px">
+    <div class="wrap">
+      <h2>Made for the way a family kitchen really runs</h2>
+      <div class="feat">
+        <div><h3>Fast by design</h3><p>Every recipe shows its real time, from first chop to table, so there are no surprises at 6 pm.</p></div>
+        <div><h3>Picky eaters welcome</h3><p>Filter for kid-friendly meals and get swaps for the foods your children refuse.</p></div>
+        <div><h3>Shopping list in one tap</h3><p>Pick your week’s meals and Chef combines the ingredients into a single list.</p></div>
+        <div><h3>Budget aware</h3><p>Plans reuse ingredients across meals, so less goes to waste and the bill stays low.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="plan" class="band">
+    <div class="wrap">
+      <h2>A week of dinners, planned in a minute</h2>
+      <p class="sub">A sample plan with two shopping trips’ worth of ingredients shared across five meals.</p>
+      <div class="week">
+        <div class="day"><span>Monday</span><b>Creamy tomato pasta</b><span class="tag">25 min</span></div>
+        <div class="day"><span>Tuesday</span><b>Chicken fried rice</b><span class="tag">20 min</span></div>
+        <div class="day"><span>Wednesday</span><b>Bean and rice bowls</b><span class="tag">20 min</span></div>
+        <div class="day"><span>Thursday</span><b>Potato and egg skillet</b><span class="tag">30 min</span></div>
+        <div class="day"><span>Friday</span><b>Baked chicken and potatoes</b><span class="tag">45 min</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Mothers say the evening feels calmer</h2>
+      <div class="quotes">
+        <blockquote><p>I stopped standing at the fridge at 5 pm wondering what to make. Now I just open Chef.</p><cite>Amira, mother of three</cite></blockquote>
+        <blockquote><p>My daughter is a fussy eater and the kid-friendly filter has saved us so many arguments.</p><cite>Leila, mother of two</cite></blockquote>
+        <blockquote><p>The shopping list alone is worth it. I spend less and throw away almost nothing.</p><cite>Sonia, mother of four</cite></blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section id="join" style="padding-top:0">
+    <div class="wrap">
+      <div class="signup">
+        <h2>Get your first weekly plan free</h2>
+        <p class="sub" style="margin-left:auto;margin-right:auto">Enter your email and we’ll send a family meal plan with a shopping list.</p>
+        <form id="f">
+          <label for="em" style="position:absolute;left:-9999px">Email address</label>
+          <input id="em" type="email" placeholder="you@example.com" required>
+          <button class="btn" type="submit">Send my plan</button>
+        </form>
+        <div class="thanks" id="ty" role="status"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span>© 2026 Chef. Cooking made easier for mothers.</span><span>Made with care for family tables.</span></div>
+</footer>
+
+<script>
+var R=[
+{n:"One-pan chicken and rice",i:["Chicken","Rice","Tomatoes"],t:35,k:1,d:"Brown, add rice and tomatoes, simmer covered."},
+{n:"Spinach and egg wraps",i:["Eggs","Spinach"],t:15,k:1,d:"Soft scrambled eggs and spinach in a warm wrap."},
+{n:"Creamy tomato pasta",i:["Pasta","Tomatoes","Spinach"],t:25,k:1,d:"A smooth sauce with spinach blended in, so it hides."},
+{n:"Potato and egg skillet",i:["Potatoes","Eggs"],t:30,k:1,d:"Crisp diced potatoes topped with gently cooked eggs."},
+{n:"Chicken fried rice",i:["Chicken","Rice","Eggs"],t:20,k:1,d:"Uses leftover rice and takes one pan."},
+{n:"Bean and rice bowls",i:["Beans","Rice","Tomatoes"],t:20,k:1,d:"Let each child build their own bowl."},
+{n:"Baked chicken and potatoes",i:["Chicken","Potatoes"],t:45,k:1,d:"Tray bake: mostly hands-off oven time."},
+{n:"Spinach pasta bake",i:["Pasta","Spinach","Tomatoes"],t:40,k:0,d:"Layered, topped with cheese and baked until golden."},
+{n:"Tomato and bean stew",i:["Beans","Tomatoes","Potatoes"],t:30,k:0,d:"Hearty, budget friendly and good for leftovers."}
+];
+var ING=["Chicken","Rice","Pasta","Eggs","Potatoes","Tomatoes","Spinach","Beans"];
+var TM=[[15,"15 minutes"],[30,"30 minutes"],[45,"45 minutes or more"]];
+var sel={},maxT=30;
+function chip(label,pressed,fn){var b=document.createElement("button");b.className="chip";b.type="button";b.textContent=label;b.setAttribute("aria-pressed",pressed);b.onclick=function(){fn(b)};return b}
+var ie=document.getElementById("ings"),te=document.getElementById("times"),out=document.getElementById("out");
+ING.forEach(function(n){ie.appendChild(chip(n,"false",function(b){sel[n]=!sel[n];b.setAttribute("aria-pressed",sel[n]?"true":"false");render()}))});
+TM.forEach(function(m){te.appendChild(chip(m[1],m[0]===maxT?"true":"false",function(b){maxT=m[0];[].forEach.call(te.children,function(c){c.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");render()}))});
+function render(){
+  var s=ING.filter(function(n){return sel[n]});
+  out.innerHTML="";
+  if(!s.length){out.innerHTML='<p class="empty">Pick at least one ingredient to see dinner ideas.</p>';return}
+  var m=R.map(function(r){var c=r.i.filter(function(x){return sel[x]}).length;return{r:r,c:c}})
+    .filter(function(x){return x.c>0&&x.r.t<=maxT})
+    .sort(function(a,b){return b.c-a.c||a.r.t-b.r.t}).slice(0,3);
+  if(!m.length){out.innerHTML='<p class="empty">No meals fit yet. Try adding an ingredient or more time.</p>';return}
+  m.forEach(function(x){
+    var d=document.createElement("div");d.className="rec";
+    var miss=x.r.i.filter(function(y){return !sel[y]});
+    d.innerHTML='<h4></h4><span class="tag warm"></span><span class="tag"></span><p></p><p></p>';
+    d.querySelector("h4").textContent=x.r.n;
+    var tg=d.querySelectorAll(".tag");tg[0].textContent=x.r.t+" min";tg[1].textContent=x.r.k?"Kid-friendly":"Family meal";
+    var ps=d.querySelectorAll("p");ps[0].textContent=x.r.d;
+    ps[1].textContent=miss.length?"You still need: "+miss.join(", ")+".":"You have everything you need.";
+    out.appendChild(d);
+  });
+}
+render();
+document.getElementById("f").onsubmit=function(e){e.preventDefault();document.getElementById("ty").textContent="Thank you. Your family meal plan is on its way.";this.reset()};
+</script>
+<script>
+(function(){
+var A={"C":"ش","Chef":"شيف","Dinner finder":"باحث العشاء","How it helps":"كيف نساعدك","Weekly plan":"الخطة الأسبوعية","Join free":"انضمي مجانًا",
+"Dinner, decided before the kids ask.":"قرّري العشاء قبل أن يسأل أطفالك.",
+"Chef helps mothers plan, shop and cook family meals in less time. Tell us what’s in your kitchen and get simple recipes that your children will actually eat.":"يساعد شيف الأمهات على التخطيط والتسوق وطهو وجبات العائلة في وقت أقل. أخبرينا بما في مطبخك واحصلي على وصفات بسيطة سيأكلها أطفالك فعلًا.",
+"Find tonight’s dinner":"اعثري على عشاء الليلة","See a weekly plan":"شاهدي خطة أسبوعية",
+"Tonight at your table":"الليلة على مائدتك","Served 4 · Ready in 30 minutes":"تكفي ٤ أشخاص · جاهزة خلال ٣٠ دقيقة",
+"One-pan chicken and rice":"دجاج وأرز في وعاء واحد","Kid-friendly":"مناسبة للأطفال","One pan":"وعاء واحد","Uses what you have":"من مكوّناتك",
+"Brown the chicken, add rice and tomatoes, cover and simmer. One pan to wash.":"حمّري الدجاج، أضيفي الأرز والطماطم، غطّي واتركيه ينضج على نار هادئة. وعاء واحد فقط للغسيل.",
+"What’s in your kitchen right now?":"ماذا لديكِ في مطبخك الآن؟",
+"Choose the ingredients you have and how much time you can spare. Chef shows meals that fit.":"اختاري المكوّنات المتوفرة لديكِ والوقت المتاح، وسيعرض شيف الوجبات المناسبة.",
+"Ingredients":"المكوّنات","Time available":"الوقت المتاح",
+"Made for the way a family kitchen really runs":"صُمّم لطريقة عمل مطبخ العائلة الحقيقية",
+"Fast by design":"سريع بالتصميم","Every recipe shows its real time, from first chop to table, so there are no surprises at 6 pm.":"كل وصفة تعرض وقتها الحقيقي من أول تقطيع حتى المائدة، فلا مفاجآت عند السادسة مساءً.",
+"Picky eaters welcome":"يرحّب بالأطفال صعبي الأكل","Filter for kid-friendly meals and get swaps for the foods your children refuse.":"اختاري الوجبات المناسبة للأطفال واحصلي على بدائل للأطعمة التي يرفضها أطفالك.",
+"Shopping list in one tap":"قائمة تسوق بلمسة واحدة","Pick your week’s meals and Chef combines the ingredients into a single list.":"اختاري وجبات أسبوعك وسيجمع شيف المكوّنات في قائمة واحدة.",
+"Budget aware":"يراعي الميزانية","Plans reuse ingredients across meals, so less goes to waste and the bill stays low.":"تعيد الخطط استخدام المكوّنات بين الوجبات، فيقلّ الهدر وتبقى الفاتورة منخفضة.",
+"A week of dinners, planned in a minute":"أسبوع من العشاء يُخطَّط في دقيقة",
+"A sample plan with two shopping trips’ worth of ingredients shared across five meals.":"خطة نموذجية تتشارك فيها خمس وجبات المكوّنات نفسها بين رحلتَي تسوق.",
+"Monday":"الاثنين","Tuesday":"الثلاثاء","Wednesday":"الأربعاء","Thursday":"الخميس","Friday":"الجمعة",
+"Creamy tomato pasta":"معكرونة بصلصة الطماطم الكريمية","Chicken fried rice":"أرز مقلي بالدجاج","Bean and rice bowls":"أطباق الأرز والفاصوليا","Potato and egg skillet":"طاجن البطاطس والبيض","Baked chicken and potatoes":"دجاج وبطاطس في الفرن",
+"25 min":"٢٥ دقيقة","20 min":"٢٠ دقيقة","30 min":"٣٠ دقيقة","45 min":"٤٥ دقيقة",
+"Mothers say the evening feels calmer":"الأمهات يقلن إن المساء أصبح أهدأ",
+"I stopped standing at the fridge at 5 pm wondering what to make. Now I just open Chef.":"لم أعد أقف أمام الثلاجة في الخامسة مساءً أتساءل ماذا أطبخ. الآن أفتح شيف فقط.",
+"Amira, mother of three":"أميرة، أم لثلاثة أطفال",
+"My daughter is a fussy eater and the kid-friendly filter has saved us so many arguments.":"ابنتي صعبة في الأكل، وخيار الوجبات المناسبة للأطفال جنّبنا كثيرًا من الخلافات.",
+"Leila, mother of two":"ليلى، أم لطفلين",
+"The shopping list alone is worth it. I spend less and throw away almost nothing.":"قائمة التسوق وحدها تستحق ذلك. أنفق أقل ولا أرمي شيئًا تقريبًا.",
+"Sonia, mother of four":"سونيا، أم لأربعة أطفال",
+"Get your first weekly plan free":"احصلي على أول خطة أسبوعية مجانًا",
+"Enter your email and we’ll send a family meal plan with a shopping list.":"أدخلي بريدك الإلكتروني وسنرسل لكِ خطة وجبات عائلية مع قائمة تسوق.",
+"Email address":"البريد الإلكتروني","Send my plan":"أرسلي لي الخطة",
+"© 2026 Chef. Cooking made easier for mothers.":"© 2026 شيف. الطبخ أسهل للأمهات.","Made with care for family tables.":"صُنع بعناية لموائد العائلة."};
+var IA={Chicken:"دجاج",Rice:"أرز",Pasta:"معكرونة",Eggs:"بيض",Potatoes:"بطاطس",Tomatoes:"طماطم",Spinach:"سبانخ",Beans:"فاصوليا"};
+var TA={15:"١٥ دقيقة",30:"٣٠ دقيقة",45:"٤٥ دقيقة أو أكثر"};
+var RA=[["دجاج وأرز في وعاء واحد","حمّري الدجاج، أضيفي الأرز والطماطم، غطّي واتركيه ينضج على نار هادئة."],["لفائف البيض والسبانخ","بيض مخفوق طري مع السبانخ داخل خبز رقيق دافئ."],["معكرونة بصلصة الطماطم الكريمية","صلصة ناعمة مع سبانخ مخلوطة فلا يلاحظها الأطفال."],["طاجن البطاطس والبيض","مكعبات بطاطس مقرمشة يعلوها بيض مطهو بلطف."],["أرز مقلي بالدجاج","يستفيد من الأرز المتبقي ويُحضَّر في مقلاة واحدة."],["أطباق الأرز والفاصوليا","دعي كل طفل يجهّز طبقه بنفسه."],["دجاج وبطاطس في الفرن","صينية واحدة: معظم الوقت في الفرن دون جهد منك."],["فرن المعكرونة بالسبانخ","طبقات مغطاة بالجبن وتُخبز حتى تصبح ذهبية."],["يخنة الطماطم والفاصوليا","مشبعة واقتصادية وتصلح لوجبة الغد."]];
+var lang="en",nodes=[],digits=function(s){return String(s).replace(/\d/g,function(d){return "٠١٢٣٤٥٦٧٨٩"[d]})};
+var L=function(k){return lang==="ar"?IA[k]:k};
+var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT),n;
+while(n=w.nextNode()){if(n.parentNode.nodeName=="SCRIPT"||n.parentNode.id=="lb"||n.parentNode.classList.contains("chip"))continue;var s=n.nodeValue.trim();if(A[s])nodes.push([n,n.nodeValue,s]);}
+function buildChips(){
+  ie.innerHTML="";te.innerHTML="";
+  ING.forEach(function(k){ie.appendChild(chip(L(k),sel[k]?"true":"false",function(b){sel[k]=!sel[k];b.setAttribute("aria-pressed",sel[k]?"true":"false");render()}))});
+  TM.forEach(function(m){te.appendChild(chip(lang==="ar"?TA[m[0]]:m[1],m[0]===maxT?"true":"false",function(b){maxT=m[0];[].forEach.call(te.children,function(c){c.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");render()}))});
+}
+window.render=function(){
+  var ar=lang==="ar",s=ING.filter(function(k){return sel[k]});
+  out.innerHTML="";
+  if(!s.length){var e=document.createElement("p");e.className="empty";e.textContent=ar?"اختاري مكوّنًا واحدًا على الأقل لتظهر لكِ أفكار العشاء.":"Pick at least one ingredient to see dinner ideas.";out.appendChild(e);return}
+  var m=R.map(function(r,i){return{r:r,i:i,c:r.i.filter(function(x){return sel[x]}).length}}).filter(function(x){return x.c>0&&x.r.t<=maxT}).sort(function(a,b){return b.c-a.c||a.r.t-b.r.t}).slice(0,3);
+  if(!m.length){var e2=document.createElement("p");e2.className="empty";e2.textContent=ar?"لا توجد وجبات مناسبة بعد. جرّبي إضافة مكوّن أو وقت أطول.":"No meals fit yet. Try adding an ingredient or more time.";out.appendChild(e2);return}
+  m.forEach(function(x){
+    var d=document.createElement("div");d.className="rec";
+    d.innerHTML='<h4></h4><span class="tag warm"></span><span class="tag"></span><p></p><p></p>';
+    var miss=x.r.i.filter(function(y){return !sel[y]}).map(L);
+    d.querySelector("h4").textContent=ar?RA[x.i][0]:x.r.n;
+    var tg=d.querySelectorAll(".tag");
+    tg[0].textContent=ar?digits(x.r.t)+" دقيقة":x.r.t+" min";
+    tg[1].textContent=ar?(x.r.k?"مناسبة للأطفال":"وجبة عائلية"):(x.r.k?"Kid-friendly":"Family meal");
+    var p=d.querySelectorAll("p");
+    p[0].textContent=ar?RA[x.i][1]:x.r.d;
+    p[1].textContent=miss.length?(ar?"ما زلتِ بحاجة إلى: "+miss.join("، ")+".":"You still need: "+miss.join(", ")+"."):(ar?"لديكِ كل ما تحتاجين إليه.":"You have everything you need.");
+    out.appendChild(d);
+  });
+};
+var ty=document.getElementById("ty"),lb=document.getElementById("lb");
+document.getElementById("f").onsubmit=function(e){e.preventDefault();ty.textContent=lang==="ar"?"شكرًا لكِ. خطة وجباتك العائلية في الطريق إليكِ.":"Thank you. Your family meal plan is on its way.";this.reset()};
+function setLang(l){
+  lang=l;var ar=l==="ar",h=document.documentElement;
+  h.lang=l;h.dir=ar?"rtl":"ltr";
+  nodes.forEach(function(x){x[0].nodeValue=ar?x[1].replace(x[2],A[x[2]]):x[1]});
+  document.title=ar?"شيف — مساعدة العشاء للأمهات المشغولات":"Chef — dinner help for busy mothers";
+  lb.textContent=ar?"English":"العربية";lb.lang=ar?"en":"ar";
+  ty.textContent="";buildChips();render();
+  try{localStorage.setItem("chef-lang",l)}catch(e){}
+}
+lb.onclick=function(){setLang(lang==="ar"?"en":"ar")};
+var saved=null;try{saved=localStorage.getItem("chef-lang")}catch(e){}
+if(saved==="ar")setLang("ar");
+})();
+</script>
+</body>
+</html>
